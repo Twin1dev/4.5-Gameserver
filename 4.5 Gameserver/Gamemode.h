@@ -37,7 +37,7 @@ bool ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 		InitListen = decltype(InitListen)(BaseAddress() + 0x39de90);
 
 		auto NewBeacon = SpawnActor<AFortOnlineBeaconHost>({});
-
+		// Unsure why, but this was fixed in 4.26, very later
 		NewBeacon->ListenPort = 7777 - 1;
 
 		InitHost(NewBeacon);
@@ -54,6 +54,8 @@ bool ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 			auto URL = FURL();
 			URL.Port = 7777;
 
+			GetGameMode()->GameSession->MaxPlayers = 100;
+
 			InitListen(UWorld::GetWorld()->NetDriver, UWorld::GetWorld(), URL, true, Err);
 			SetWorld(UWorld::GetWorld()->NetDriver, UWorld::GetWorld());
 
@@ -64,15 +66,56 @@ bool ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 		}
 		else {
 			// should never happen
-			std::cout << "CreateNetDriver is Most likely INVALID!\n";
+			std::cout << "InitHost is Most likely INVALID!\n";
 		}
+
+		GetGameMode()->WarmupRequiredPlayerCount = 1;
 
 		GetGameState()->PlayersLeft--;
 		GetGameState()->OnRep_PlayersLeft();
 		// For calling SpawnDefaultPawnFor
-		GameMode->bWorldIsReady = true;
+		GetGameMode()->bWorldIsReady = true;
+
+
 	}
 
 	bool ret = ReadyToStartMatch(GameMode);
 	return ret;
 }
+
+static void (*HandleStartingNewPlayer)(AFortGameModeAthena*, AFortPlayerControllerAthena*);
+// https://docs.unrealengine.com/4.27/en-US/API/Runtime/Engine/GameFramework/AGameModeBase/HandleStartingNewPlayer/
+void HandleStartingNewPlayerHook(AFortGameModeAthena* GM, AFortPlayerControllerAthena* NewPlayer)
+{
+	std::cout << "join\n";
+
+	auto PlayerState = (AFortPlayerStateAthena*)NewPlayer->PlayerState;
+
+	NewPlayer->bHasServerFinishedLoading = true;
+	NewPlayer->OnRep_bHasServerFinishedLoading();
+
+	PlayerState->bHasStartedPlaying = true;
+	PlayerState->OnRep_bHasStartedPlaying();
+
+	return HandleStartingNewPlayer(GM, NewPlayer);
+}
+
+// https://docs.unrealengine.com/4.26/en-US/API/Runtime/Engine/GameFramework/AGameModeBase/SpawnDefaultPawnFor/
+APawn* SpawnDefaultPawnForHook(AGameModeBase* GameMode, AController* NewPlayer, AActor* StartSpot)
+{
+	std::cout << ("SpawnDefaultPan\n");
+
+
+	// Dont know why using SpawnDefaultPawnAtTransform Crashed.
+
+	auto PawnClass = StaticFindObject<UClass>("/Game/Athena/PlayerPawn_Athena.PlayerPawn_Athena_C");
+
+	auto NewPawn = SpawnActor<APawn>(StartSpot->K2_GetActorLocation(), StartSpot->K2_GetActorRotation(), PawnClass);
+
+	return NewPawn;
+}
+
+
+static inline void (*KickPlayer)(AGameSession*, AController*);
+
+static void KickPlayerHook(AGameSession*, AController*) { return; }

@@ -31,3 +31,14 @@ static void (*PauseBeaconRequests)(AOnlineBeacon* Beacon, bool bPause);
 inline bool (*InitListen)(UNetDriver* Driver, void* InNotify, FURL& LocalURL, bool bReuseAddressAndPort, FString& Error);
 inline void* (*SetWorld)(UNetDriver* NetDriver, UWorld* World);
 //  ----------------------------------------------------------------------------------------------------------------------
+
+// https://docs.unrealengine.com/4.26/en-US/API/Runtime/Engine/Engine/UNetDriver/TickFlush/
+static void (*TickFlush)(UNetDriver*);
+static void TickFlushHook(UNetDriver* NetDriver)
+{
+	// ServerReplicateActors https://docs.unrealengine.com/4.26/en-US/API/Runtime/Engine/Engine/UNetDriver/ServerReplicateActors/
+	if (auto ReplicationDriver = NetDriver->ReplicationDriver)
+		reinterpret_cast<void(*)(UObject*)>(ReplicationDriver->Vft[0x53])(ReplicationDriver);
+
+	return TickFlush(NetDriver);
+}

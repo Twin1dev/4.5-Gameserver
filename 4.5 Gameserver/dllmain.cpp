@@ -15,6 +15,8 @@
 
 #include "Hooks.h"
 
+// This code is well commented. if you are new to gameservers, i recommend you read some of this :)
+
 
 DWORD WINAPI Main(LPVOID)
 {
@@ -27,6 +29,8 @@ DWORD WINAPI Main(LPVOID)
     InitGObjects();
 
     CREATEHOOK(BaseAddress() + 0x2540030, GetNetModeWorld, nullptr);
+
+    CREATEHOOK(BaseAddress() + 0x216dea0, KickPlayerHook, &KickPlayer);
     
     CREATEHOOK(BaseAddress() + 0x1f4efd0, GetNetModeActor, nullptr);
 
@@ -35,22 +39,16 @@ DWORD WINAPI Main(LPVOID)
 
     UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);
 
-    auto ChangeGameSessionID = BaseAddress() + 0xc96ca0;
-
-    // Nulls so it doesnt crash, if you hook AActor::GetNetMode early then it calls this for no reason and crashes.
-    DWORD dwProt;
-    VirtualProtect((PVOID)ChangeGameSessionID, 1, PAGE_EXECUTE_READWRITE, &dwProt);
-
-    *(uint8_t*)ChangeGameSessionID = 0xC3;
-
-    DWORD dwTemp;
-    VirtualProtect((PVOID)ChangeGameSessionID, 1, dwProt, &dwTemp);
-    //
+    Hooks::Init();
+    Hooks::NullFunctions();
 
     static auto GameModeDefault = StaticFindObject<AFortGameModeAthena>("/Script/FortniteGame.Default__FortGameModeAthena");
-
+    // If you would like understanding on Vfts and Virtual Functions: https://en.wikipedia.org/wiki/Virtual_method_table, https://en.wikipedia.org/wiki/Virtual_function
     VirtualHook(GameModeDefault->Vft, 253, ReadyToStartMatchHook, (PVOID*)&ReadyToStartMatch);
+    VirtualHook(GameModeDefault->Vft, 193, SpawnDefaultPawnForHook);
+    VirtualHook(GameModeDefault->Vft, 199, HandleStartingNewPlayerHook, (PVOID*)&HandleStartingNewPlayer);
 
+    CREATEHOOK(BaseAddress() + 0x2299ff0, TickFlushHook, &TickFlush);
 
     return 0;
 }
