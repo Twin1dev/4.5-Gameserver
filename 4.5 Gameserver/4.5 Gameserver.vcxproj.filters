@@ -12,51 +12,86 @@
     <Filter Include="SDK">
       <UniqueIdentifier>{b723a16e-f5a4-41bc-8573-ca7640614608}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FN">
-      <UniqueIdentifier>{c143ada8-86d8-436d-8489-b613c6cca7fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SDK\SDK">
       <UniqueIdentifier>{f140f6fb-5086-4ab2-acff-0d033be0fa31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FN\Gameplay">
-      <UniqueIdentifier>{4dd4cb07-c317-4d33-81ed-8d84b46b0d4e}</UniqueIdentifier>
+    <Filter Include="Fortnite">
+      <UniqueIdentifier>{c143ada8-86d8-436d-8489-b613c6cca7fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FN\Misc">
+    <Filter Include="Server">
+      <UniqueIdentifier>{ad20bb6e-b926-4ddb-9daa-7f3193abac79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Misc">
       <UniqueIdentifier>{9dbe9e6d-bcab-45ca-a685-22d8cbbef317}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FN\Memory">
+    <Filter Include="Server\Memory">
       <UniqueIdentifier>{7189f826-9ce3-4743-a2b9-92f74e89fcd2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FN\Gameplay\Native">
-      <UniqueIdentifier>{16d78308-5559-4732-9355-2e692778f476}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SDK\SDK\FN_Basic.cpp">
+      <Filter>SDK\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\SDK\FN_CoreUObject_functions.cpp">
+      <Filter>SDK\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\SDK\FN_FortniteGame_functions.cpp">
+      <Filter>SDK\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\SDK\FN_Engine_functions.cpp">
+      <Filter>SDK\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\SDK\FN_GameplayAbilities_functions.cpp">
+      <Filter>SDK\SDK</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
-      <Filter>FN\Memory</Filter>
+      <Filter>Server\Memory</Filter>
     </ClInclude>
     <ClInclude Include="Includes.h">
-      <Filter>FN\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Hooks.h">
-      <Filter>FN\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Abilities.h">
-      <Filter>FN\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>FN\Gameplay</Filter>
+      <Filter>Server\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
-      <Filter>FN\Misc</Filter>
+      <Filter>Server\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Util.h">
-      <Filter>FN\Misc</Filter>
+      <Filter>Server\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="SDK\PropertyFixup.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\SDK.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Abilities.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamemode.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Net.h">
+      <Filter>Fortnite</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooking.h">
+      <Filter>Server\Misc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="F:\Fortnite Builds\4.5\4.5\FortniteGame\Binaries\Win64\offsets.log">
+      <Filter>SDK\SDK</Filter>
+    </Text>
   </ItemGroup>
 </Project>

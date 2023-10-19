@@ -6,6 +6,7 @@ namespace Sigs
 
 }
 
+
 uintptr_t SigScan(const char* signature, bool bRelative = false, uint32_t offset = 0) {
 	uintptr_t base_address = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 	static auto patternToByte = [](const char* pattern)

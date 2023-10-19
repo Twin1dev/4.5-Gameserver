@@ -7,5 +7,6 @@
 #include "minhook/MinHook.h"
 
 // Uncomment out once added SDK!
-//#include "SDK/SDK.hpp"
-//using namespace SDK;
+#include "SDK/SDK.hpp"
+using namespace SDK;
+using namespace Params;
