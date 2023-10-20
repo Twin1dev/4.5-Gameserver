@@ -97,6 +97,20 @@ void HandleStartingNewPlayerHook(AFortGameModeAthena* GM, AFortPlayerControllerA
 	PlayerState->bHasStartedPlaying = true;
 	PlayerState->OnRep_bHasStartedPlaying();
 
+	//for (int i = 0; i < GetGameMode()->StartingItems.Num(); i++)
+	//{
+	//	auto Item = GetGameMode()->StartingItems[i];
+
+	//	if (!Item.Item)
+	//		continue;
+
+	//	GiveItemToPC(NewPlayer, Item.Item, Item.Count);
+	//}
+
+	//GiveAbilitySetToASC(PlayerState->AbilitySystemComponent);
+
+	NewPlayer->OverriddenBackpackSize = 5;
+
 	return HandleStartingNewPlayer(GM, NewPlayer);
 }
 
@@ -111,6 +125,30 @@ APawn* SpawnDefaultPawnForHook(AGameModeBase* GameMode, AController* NewPlayer, 
 	auto PawnClass = StaticFindObject<UClass>("/Game/Athena/PlayerPawn_Athena.PlayerPawn_Athena_C");
 
 	auto NewPawn = SpawnActor<APawn>(StartSpot->K2_GetActorLocation(), StartSpot->K2_GetActorRotation(), PawnClass);
+
+	auto PlayerState = (AFortPlayerStateAthena*)NewPlayer->PlayerState;
+
+	GiveAbilitySetToASC(PlayerState->AbilitySystemComponent);
+
+	for (int i = 0; i < ((AFortGameModeAthena*)GameMode)->StartingItems.Num(); i++)
+	{
+		auto& StartingItem = ((AFortGameModeAthena*)GameMode)->StartingItems[i];
+
+		GiveItemToPC((AFortPlayerController*)NewPlayer, StartingItem.Item, StartingItem.Count);
+	}
+
+	static auto DefaultPickaxe = StaticFindObject<UAthenaPickaxeItemDefinition>("/Game/Athena/Items/Cosmetics/Pickaxes/DefaultPickaxe.DefaultPickaxe");
+
+	GiveItemToPC((AFortPlayerController*)NewPlayer, DefaultPickaxe->WeaponDefinition, 1);
+
+	static auto Head = StaticFindObject<UCustomCharacterPart>("/Game/Characters/CharacterParts/Female/Medium/Heads/F_Med_Head1.F_Med_Head1");
+	static auto Body = StaticFindObject<UCustomCharacterPart>("/Game/Characters/CharacterParts/Female/Medium/Bodies/F_Med_Soldier_01.F_Med_Soldier_01");
+
+	PlayerState->CharacterParts[0] = Head;
+	PlayerState->CharacterParts[1] = Body;
+	PlayerState->OnRep_CharacterParts();
+
+	Update((AFortPlayerController*)NewPlayer);
 
 	return NewPawn;
 }

@@ -40,5 +40,10 @@ static void TickFlushHook(UNetDriver* NetDriver)
 	if (auto ReplicationDriver = NetDriver->ReplicationDriver)
 		reinterpret_cast<void(*)(UObject*)>(ReplicationDriver->Vft[0x53])(ReplicationDriver);
 
+	if (GetAsyncKeyState(VK_F6) & 1)
+	{
+		GetDefaultObject<UKismetSystemLibrary>()->ExecuteConsoleCommand(UWorld::GetWorld(), L"startaircraft", nullptr);
+	}
+
 	return TickFlush(NetDriver);
 }

@@ -15,3 +15,13 @@ static void VirtualHook(void** vft, int idx, void* newfunc, void** OG = nullptr)
 	DWORD dwTemp;
 	VirtualProtect(&vft[idx], 8, dwProt, &dwTemp);
 }
+
+static void HookExec(UFunction* Function, void* Hook, void** OG = nullptr)
+{
+	auto& Exec = Function->ExecFunction;
+
+	if (OG)
+		*OG = Exec;
+
+	Exec = (UFunction::FNativeFuncPtr)Hook;
+}

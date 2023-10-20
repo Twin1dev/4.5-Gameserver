@@ -14,3 +14,13 @@ inline T* StaticLoadObject(std::string Path, UClass* InClass = T::StaticClass(),
 {
 	return (T*)StaticLoadObject_(InClass, Outer, std::wstring(Path.begin(), Path.end()).c_str(), nullptr, 0, nullptr, false);
 }
+
+
+struct FFrame
+{
+	char pad[0x10];
+	class UFunction* Node;
+	UObject* Object;
+	uint8* Code;
+	uint8* Locals;
+};

@@ -379,6 +379,12 @@ struct FGameplayAbilitySpecHandle
 {
 public:
 	int32                                        Handle;                                            // 0x0(0x4)(ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPrivate)
+
+	void GenerateNewHandle()
+	{
+		static int GHandle = 1;
+		Handle = GHandle++;
+	}
 };
 
 // 0xA0 (0xA0 - 0x0)

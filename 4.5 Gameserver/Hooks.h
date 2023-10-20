@@ -2,6 +2,18 @@
 
 // File is used for hooks that really dont have a category
 namespace Hooks {
+
+	static __int64 (*DispatchRequest)(__int64 a1, __int64* a2, int a3);
+
+	static __int64 DispatchRequestHook(__int64 a1, __int64* a2, int a3)
+	{
+		*(int*)(__int64(a2) + 0x60) = a3;
+
+		return DispatchRequest(a1, a2, 3);
+	}
+
+	static void CollectGarbage() { return; }
+
 	std::vector<int> AddrToNull;
 
 	void NullFunctions() 
