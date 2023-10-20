@@ -43,8 +43,6 @@ DWORD WINAPI Main(LPVOID)
 
     UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);
 
- //   CREATEHOOK(BaseAddress() + 0x1532420, Hooks::CollectGarbage, nullptr);
-
     Hooks::Init();
     Hooks::NullFunctions();
 
@@ -60,6 +58,11 @@ DWORD WINAPI Main(LPVOID)
 
     // Player
     VirtualHook(FortPlayerControllerAthenaDefault->Vft, 484, ServerExecuteInventoryItemHook);
+ //   VirtualHook(FortPlayerControllerAthenaDefault->Vft, 260, ServerAcknowlegePossessionHook);
+
+    // Ability
+    VirtualHook(GetDefaultObject<UFortAbilitySystemComponentAthena>()->Vft, 0xcb, InternalServerTryActivateAbilityHook);
+
 
     //auto ServerLoadingScreenDropped = StaticFindObject<UFunction>("/Script/FortniteGame.FortPlayerController.ServerLoadingScreenDropped");
 

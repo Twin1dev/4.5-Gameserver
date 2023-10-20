@@ -12,6 +12,8 @@ namespace Hooks {
 		return DispatchRequest(a1, a2, 3);
 	}
 
+	static bool RetTrueHook() { return true; };
+
 	static void CollectGarbage() { return; }
 
 	std::vector<int> AddrToNull;

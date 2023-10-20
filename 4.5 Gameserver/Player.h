@@ -11,6 +11,7 @@ void ServerExecuteInventoryItemHook(AFortPlayerController* PlayerController, FGu
 
 	Pawn->EquipWeaponDefinition((UFortWeaponItemDefinition*)ItemDef, ItemGuid);
 }
+
 void (*ServerLoadingScreenDropped)(UObject* Context, FFrame* Stack, void* Ret);
 void ServerLoadingScreenDroppedHook(UObject* Context, FFrame* Stack, void* Ret)
 {
@@ -29,3 +30,10 @@ void ServerLoadingScreenDroppedHook(UObject* Context, FFrame* Stack, void* Ret)
 
 	return ServerLoadingScreenDropped(Context, Stack, Ret);
 }
+
+// https://docs.unrealengine.com/4.26/en-US/API/Runtime/Engine/GameFramework/APlayerController/ServerAcknowledgePossession/
+void ServerAcknowlegePossessionHook(APlayerController* Controller, APawn* Pawn)
+{
+	Controller->AcknowledgedPawn = Pawn;
+}
+
